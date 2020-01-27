@@ -1,7 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import Task from './Task';
+import { withKnobs, object } from '@storybook/addon-knobs';
 export default {
   title: 'Task',
+  decorators: [withKnobs],
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
 };
@@ -9,23 +11,20 @@ export const actionsData = {
   onPinTask: action('onPinTask'),
   onArchiveTask: action('onArchiveTask'),
 };
-
 export const taskData = {
   id: '1',
   title: 'Test Task',
   state: 'Task_INBOX',
   updated_at: new Date(2019, 0, 1, 9, 0),
 };
-
 const taskTemplate = `<task :task="task" @archiveTask="onArchiveTask" @pinTask="onPinTask"/>`;
-
 // default task state
 export const Default = () => ({
   components: { Task },
   template: taskTemplate,
   props: {
     task: {
-      default: taskData,
+      default: object('task', { ...taskData }),
     },
   },
   methods: actionsData,
@@ -58,3 +57,4 @@ export const Archived = () => ({
   },
   methods: actionsData,
 });
+
